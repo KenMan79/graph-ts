@@ -1,4 +1,6 @@
-import { BigDecimal, TypedMapEntry, JSONValue, Value, Entity, TypedMap, Result, Wrapped } from '../index'
+import { BigDecimal } from '../numbers'
+import { TypedMapEntry, Entity, TypedMap, Result, Wrapped } from '../collections'
+import { JSONValue, Value } from '../value'
 import { ethereum } from '../chain/ethereum'
 
 export enum TypeId {

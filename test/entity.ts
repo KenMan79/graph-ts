@@ -1,4 +1,5 @@
-import { Entity, Bytes, BigDecimal, BigInt } from 'temp_lib/index'
+import { BigDecimal, BigInt } from 'temp_lib/numbers'
+import { Entity, Bytes } from 'temp_lib/collections'
 
 export function testEntity(): void {
   let entity = new Entity()

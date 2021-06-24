@@ -1,4 +1,5 @@
-import { BigInt, ByteArray, Bytes } from 'temp_lib/index'
+import { BigInt } from 'temp_lib/numbers'
+import { ByteArray, Bytes } from 'temp_lib/collections'
 
 // Test some BigInt methods.
 export function testBigInt(): void {

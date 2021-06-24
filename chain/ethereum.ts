@@ -1,4 +1,5 @@
-import { Address, BigInt, Bytes, Wrapped } from '..'
+import { Bytes, Wrapped } from '../collections'
+import { Address, BigInt } from '../numbers'
 
 /** Host Ethereum interface */
 export declare namespace ethereum {
@@ -33,8 +34,80 @@ export namespace ethereum {
    * A dynamically typed value used when accessing Ethereum data.
    */
   export class Value {
-    kind: ValueKind
-    data: ValuePayload
+    constructor(
+      public kind: ValueKind,
+      public data: ValuePayload,
+    ) {}
+
+    @operator('<')
+    lt(other: Value): boolean {
+      return false
+      // let sameKind = this.kind == other.kind
+      //
+      // if (!sameKind) {
+      //   return false
+      // }
+      //
+      // switch (this.kind) {
+      //   case ValueKind.ADDRESS:
+      //     return this.toAddress() < other.toAddress()
+      //   case ValueKind.FIXED_BYTES:
+      //     return this.toBytes() < other.toBytes()
+      //   case ValueKind.BYTES:
+      //     return this.toBytes() < other.toBytes()
+      //   case ValueKind.INT:
+      //     return this.toI32() < other.toI32()
+      //   case ValueKind.UINT:
+      //     return this.toI32() < other.toI32()
+      //   case ValueKind.BOOL:
+      //     return this.toBoolean() < other.toBoolean()
+      //   case ValueKind.STRING:
+      //     return this.toString() < other.toString()
+      //   case ValueKind.FIXED_ARRAY:
+      //     return this.toArray() < other.toArray()
+      //   case ValueKind.ARRAY:
+      //     return this.toArray() < other.toArray()
+      //   case ValueKind.TUPLE:
+      //     return this.toTuple() < other.toTuple()
+      //   default:
+      //     return false
+      // }
+    }
+
+    @operator('>')
+    gt(other: Value): boolean {
+      return false
+      // let sameKind = this.kind == other.kind
+      //
+      // if (!sameKind) {
+      //   return false
+      // }
+      //
+      // switch (this.kind) {
+      //   case ValueKind.ADDRESS:
+      //     return this.toAddress() > other.toAddress()
+      //   case ValueKind.FIXED_BYTES:
+      //     return this.toBytes() > other.toBytes()
+      //   case ValueKind.BYTES:
+      //     return this.toBytes() > other.toBytes()
+      //   case ValueKind.INT:
+      //     return this.toI32() > other.toI32()
+      //   case ValueKind.UINT:
+      //     return this.toI32() > other.toI32()
+      //   case ValueKind.BOOL:
+      //     return this.toBoolean() > other.toBoolean()
+      //   case ValueKind.STRING:
+      //     return this.toString() > other.toString()
+      //   case ValueKind.FIXED_ARRAY:
+      //     return this.toArray() > other.toArray()
+      //   case ValueKind.ARRAY:
+      //     return this.toArray() > other.toArray()
+      //   case ValueKind.TUPLE:
+      //     return this.toTuple() > other.toTuple()
+      //   default:
+      //     return false
+      // }
+    }
 
     toAddress(): Address {
       assert(this.kind == ValueKind.ADDRESS, 'Ethereum value is not an address')
@@ -182,81 +255,47 @@ export namespace ethereum {
 
     static fromAddress(address: Address): Value {
       assert(address.length == 20, 'Address must contain exactly 20 bytes')
-
-      let token = new Value()
-      token.kind = ValueKind.ADDRESS
-      token.data = changetype<u32>(address)
-      return token
+      return new Value(ValueKind.ADDRESS, changetype<u32>(address))
     }
 
     static fromBoolean(b: boolean): Value {
-      let token = new Value()
-      token.kind = ValueKind.BOOL
-      token.data = b ? 1 : 0
-      return token
+      return new Value(ValueKind.BOOL, b ? 1 : 0)
     }
 
     static fromBytes(bytes: Bytes): Value {
-      let token = new Value()
-      token.kind = ValueKind.BYTES
-      token.data = changetype<u32>(bytes)
-      return token
+      return new Value(ValueKind.BYTES, changetype<u32>(bytes))
     }
 
     static fromFixedBytes(bytes: Bytes): Value {
-      let token = new Value()
-      token.kind = ValueKind.FIXED_BYTES
-      token.data = changetype<u32>(bytes)
-      return token
+      return new Value(ValueKind.FIXED_BYTES, changetype<u32>(bytes))
     }
 
     static fromI32(i: i32): Value {
-      let token = new Value()
-      token.kind = ValueKind.INT
-      token.data = changetype<u32>(BigInt.fromI32(i))
-      return token
+      return new Value(ValueKind.INT, changetype<u32>(BigInt.fromI32(i)))
     }
 
     static fromSignedBigInt(i: BigInt): Value {
-      let token = new Value()
-      token.kind = ValueKind.INT
-      token.data = changetype<u32>(i)
-      return token
+      return new Value(ValueKind.INT, changetype<u32>(i))
     }
 
     static fromUnsignedBigInt(i: BigInt): Value {
-      let token = new Value()
-      token.kind = ValueKind.UINT
-      token.data = changetype<u32>(i)
-      return token
+      return new Value(ValueKind.UINT, changetype<u32>(i))
     }
 
     static fromString(s: string): Value {
-      let token = new Value()
-      token.kind = ValueKind.STRING
-      token.data = changetype<u32>(s)
-      return token
+      return new Value(ValueKind.STRING, changetype<u32>(s))
     }
 
     static fromArray(values: Array<Value>): Value {
-      let token = new Value()
-      token.kind = ValueKind.ARRAY
-      token.data = changetype<u32>(values)
-      return token
+      return new Value(ValueKind.ARRAY, changetype<u32>(values))
     }
 
     static fromFixedSizedArray(values: Array<Value>): Value {
-      let token = new Value()
-      token.kind = ValueKind.FIXED_ARRAY
-      token.data = changetype<u32>(values)
-      return token
+      return new Value(ValueKind.FIXED_ARRAY, changetype<u32>(values))
     }
 
     static fromTuple(values: Tuple): Value {
-      let token = new Value()
-      token.kind = ValueKind.TUPLE
-      token.data = changetype<u32>(values)
-      return token
+      return new Value(ValueKind.TUPLE, changetype<u32>(values))
     }
 
     static fromTupleArray(values: Array<Tuple>): Value {
@@ -339,73 +378,77 @@ export namespace ethereum {
    * code generation then creates subclasses that provide named getters to
    * access the members by name.
    */
-  export class Tuple extends Array<Value> {}
+  export class Tuple extends Array<Value> {
+    // constructor(len: i32) {
+    //   super(len)
+    // }
+  }
 
   /**
    * An Ethereum block.
    */
   export class Block {
-    hash: Bytes
-    parentHash: Bytes
-    unclesHash: Bytes
-    author: Address
-    stateRoot: Bytes
-    transactionsRoot: Bytes
-    receiptsRoot: Bytes
-    number: BigInt
-    gasUsed: BigInt
-    gasLimit: BigInt
-    timestamp: BigInt
-    difficulty: BigInt
-    totalDifficulty: BigInt
-    size: BigInt | null
+    hash!: Bytes
+    parentHash!: Bytes
+    unclesHash!: Bytes
+    author!: Address
+    stateRoot!: Bytes
+    transactionsRoot!: Bytes
+    receiptsRoot!: Bytes
+    number!: BigInt
+    gasUsed!: BigInt
+    gasLimit!: BigInt
+    timestamp!: BigInt
+    difficulty!: BigInt
+    totalDifficulty!: BigInt
+    size!: BigInt | null
   }
 
   /**
    * An Ethereum transaction.
    */
   export class Transaction {
-    hash: Bytes
-    index: BigInt
-    from: Address
-    to: Address | null
-    value: BigInt
-    gasUsed: BigInt
-    gasPrice: BigInt
-    input: Bytes
+    hash!: Bytes
+    index!: BigInt
+    from!: Address
+    to!: Address | null
+    value!: BigInt
+    gasUsed!: BigInt
+    gasPrice!: BigInt
+    input!: Bytes
   }
 
   /**
    * Common representation for Ethereum smart contract calls.
    */
   export class Call {
-    to: Address
-    from: Address
-    block: Block
-    transaction: Transaction
-    inputValues: Array<EventParam>
-    outputValues: Array<EventParam>
+    to!: Address
+    from!: Address
+    block!: Block
+    transaction!: Transaction
+    inputValues!: Array<EventParam>
+    outputValues!: Array<EventParam>
   }
 
   /**
    * Common representation for Ethereum smart contract events.
    */
   export class Event {
-    address: Address
-    logIndex: BigInt
-    transactionLogIndex: BigInt
-    logType: string | null
-    block: Block
-    transaction: Transaction
-    parameters: Array<EventParam>
+    address!: Address
+    logIndex!: BigInt
+    transactionLogIndex!: BigInt
+    logType!: string | null
+    block!: Block
+    transaction!: Transaction
+    parameters!: Array<EventParam>
   }
 
   /**
    * A dynamically-typed Ethereum event parameter.
    */
   export class EventParam {
-    name: string
-    value: Value
+    name!: string
+    value!: Value
   }
 
   export class SmartContractCall {

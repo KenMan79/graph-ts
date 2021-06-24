@@ -15,6 +15,12 @@ if (!fs.existsSync('test/temp_lib/chain')) {
   fs.mkdirSync('test/temp_lib/chain')
 }
 
+fs.copyFileSync('datasource.ts', 'test/temp_lib/datasource.ts')
+fs.copyFileSync('json.ts', 'test/temp_lib/json.ts')
+fs.copyFileSync('numbers.ts', 'test/temp_lib/numbers.ts')
+fs.copyFileSync('collections.ts', 'test/temp_lib/collections.ts')
+fs.copyFileSync('conversion.ts', 'test/temp_lib/conversion.ts')
+fs.copyFileSync('value.ts', 'test/temp_lib/value.ts')
 fs.copyFileSync('chain/ethereum.ts', 'test/temp_lib/chain/ethereum.ts')
 fs.copyFileSync('index.ts', 'test/temp_lib/index.ts')
 let output_path = 'test/temp_out/test.wasm'
@@ -36,14 +42,27 @@ try {
 
   // Cleanup
   fs.unlinkSync('test/temp_lib/index.ts')
+  fs.unlinkSync('test/temp_lib/numbers.ts')
+  fs.unlinkSync('test/temp_lib/collections.ts')
+  fs.unlinkSync('test/temp_lib/conversion.ts')
+  fs.unlinkSync('test/temp_lib/value.ts')
+  fs.unlinkSync('test/temp_lib/datasource.ts')
+  fs.unlinkSync('test/temp_lib/json.ts')
   fs.unlinkSync('test/temp_lib/chain/ethereum.ts')
   fs.rmdirSync('test/temp_lib/chain')
   fs.rmdirSync('test/temp_lib')
   fs.unlinkSync('test/temp_out/test.wasm')
   fs.rmdirSync('test/temp_out')
 } catch (e) {
+  console.error(e)
   process.exitCode = 1
   fs.unlinkSync('test/temp_lib/index.ts')
+  fs.unlinkSync('test/temp_lib/numbers.ts')
+  fs.unlinkSync('test/temp_lib/collections.ts')
+  fs.unlinkSync('test/temp_lib/conversion.ts')
+  fs.unlinkSync('test/temp_lib/value.ts')
+  fs.unlinkSync('test/temp_lib/datasource.ts')
+  fs.unlinkSync('test/temp_lib/conversion.ts')
   fs.unlinkSync('test/temp_lib/chain/ethereum.ts')
   fs.rmdirSync('test/temp_lib/chain')
   fs.rmdirSync('test/temp_lib')
@@ -60,7 +79,7 @@ function testFile(path) {
 
   WebAssembly.instantiate(test_wasm, {
     env,
-    index: {
+    conversion: {
       'typeConversion.bytesToHex': function () {},
     },
   }).then((module) => {

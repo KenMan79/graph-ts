@@ -1,4 +1,4 @@
-import { ByteArray, Bytes } from 'temp_lib/index'
+import { ByteArray, Bytes } from 'temp_lib/collections'
 
 // Test some Bytes methods.
 export function testBytes(): void {
